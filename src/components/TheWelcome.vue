@@ -1,121 +1,84 @@
-<script setup>
-import WelcomeItem from './WelcomeItem.vue'
-import DocumentationIcon from './icons/IconDocumentation.vue'
-import ToolingIcon from './icons/IconTooling.vue'
-import EcosystemIcon from './icons/IconEcosystem.vue'
-import CommunityIcon from './icons/IconCommunity.vue'
-import SupportIcon from './icons/IconSupport.vue'
+<template>
+  <v-app>
+    <v-sheet class="pa-12" rounded>
+
+
+      <!-- Espacio agregado entre el v-app-bar y el formulario -->
+      <v-card class="mx-auto px-6 py-8 mb-10" max-width="344">
+        <v-sheet class="text-h5 text-center py-4"> Log In </v-sheet>
+        <v-form v-model="form" @submit.prevent="onSubmit">
+          <v-text-field
+            v-model="email"
+            :readonly="loading"
+            :rules="[required]"
+            class="mb-2"
+            label="Email"
+            clearable
+          ></v-text-field>
+
+          <v-text-field
+            v-model="password"
+            :readonly="loading"
+            :rules="[required]"
+            label="Password"
+            placeholder="Enter your password"
+            clearable
+            type="password"
+          ></v-text-field>
+
+          <br />
+
+          <v-btn
+            :disabled="!form"
+            :loading="loading"
+            color="#3386C1"
+            size="large"
+            type="submit"
+            variant="elevated"
+            block
+          >
+            Log in
+          </v-btn>
+          <br />
+          <v-card-actions class="d-flex justify-center">
+            <v-btn text href="#" class="text-body-2" color="#3386C1">
+              Forgot password?
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-sheet>
+  </v-app>
+</template>
+
+<script>
+export default {
+  data: () => ({
+    form: false,
+    email: null,
+    password: null,
+    loading: false,
+  }),
+
+  methods: {
+    onSubmit() {
+      if (!this.form) return
+
+      this.loading = true
+
+      setTimeout(() => (this.loading = false), 2000)
+    },
+    required(v) {
+      return !!v || 'Field is required'
+    },
+  },
+}
 </script>
 
-<template>
-  <WelcomeItem>
-    <template #icon>
-      <DocumentationIcon />
-    </template>
-    <template #heading>Documentation</template>
+<style scoped>
+.text-h5 {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+</style>
 
-    Vue’s
-    <a href="https://vuejs.org/" target="_blank" rel="noopener"
-      >official documentation</a
-    >
-    provides you with all information you need to get started.
-  </WelcomeItem>
-
-  <WelcomeItem>
-    <template #icon>
-      <ToolingIcon />
-    </template>
-    <template #heading>Tooling</template>
-
-    This project is served and bundled with
-    <a
-      href="https://vite.dev/guide/features.html"
-      target="_blank"
-      rel="noopener"
-      >Vite</a
-    >. The recommended IDE setup is
-    <a href="https://code.visualstudio.com/" target="_blank" rel="noopener"
-      >VSCode</a
-    >
-    +
-    <a
-      href="https://github.com/johnsoncodehk/volar"
-      target="_blank"
-      rel="noopener"
-      >Volar</a
-    >. If you need to test your components and web pages, check out
-    <a href="https://www.cypress.io/" target="_blank" rel="noopener">Cypress</a>
-    and
-    <a href="https://on.cypress.io/component" target="_blank" rel="noopener"
-      >Cypress Component Testing</a
-    >.
-
-    <br />
-
-    More instructions are available in <code>README.md</code>.
-  </WelcomeItem>
-
-  <WelcomeItem>
-    <template #icon>
-      <EcosystemIcon />
-    </template>
-    <template #heading>Ecosystem</template>
-
-    Get official tools and libraries for your project:
-    <a href="https://pinia.vuejs.org/" target="_blank" rel="noopener">Pinia</a>,
-    <a href="https://router.vuejs.org/" target="_blank" rel="noopener"
-      >Vue Router</a
-    >,
-    <a href="https://test-utils.vuejs.org/" target="_blank" rel="noopener"
-      >Vue Test Utils</a
-    >, and
-    <a href="https://github.com/vuejs/devtools" target="_blank" rel="noopener"
-      >Vue Dev Tools</a
-    >. If you need more resources, we suggest paying
-    <a
-      href="https://github.com/vuejs/awesome-vue"
-      target="_blank"
-      rel="noopener"
-      >Awesome Vue</a
-    >
-    a visit.
-  </WelcomeItem>
-
-  <WelcomeItem>
-    <template #icon>
-      <CommunityIcon />
-    </template>
-    <template #heading>Community</template>
-
-    Got stuck? Ask your question on
-    <a href="https://chat.vuejs.org" target="_blank" rel="noopener">Vue Land</a
-    >, our official Discord server, or
-    <a
-      href="https://stackoverflow.com/questions/tagged/vue.js"
-      target="_blank"
-      rel="noopener"
-      >StackOverflow</a
-    >. You should also subscribe to
-    <a href="https://news.vuejs.org" target="_blank" rel="noopener"
-      >our mailing list</a
-    >
-    and follow the official
-    <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-      >@vuejs</a
-    >
-    twitter account for latest news in the Vue world.
-  </WelcomeItem>
-
-  <WelcomeItem>
-    <template #icon>
-      <SupportIcon />
-    </template>
-    <template #heading>Support Vue</template>
-
-    As an independent project, Vue relies on community backing for its
-    sustainability. You can help us by
-    <a href="https://vuejs.org/sponsor/" target="_blank" rel="noopener"
-      >becoming a sponsor</a
-    >.
-  </WelcomeItem>
-</template>
