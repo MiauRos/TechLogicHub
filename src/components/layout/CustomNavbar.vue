@@ -4,7 +4,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn text to="/" v-if="!show">Home</v-btn>
+    <v-btn text to="/home" v-if="!show">Home</v-btn>
     <v-btn text to="/user" v-if="!show">User</v-btn>
   </v-app-bar>
 </template>
