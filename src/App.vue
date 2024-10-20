@@ -1,14 +1,13 @@
 <template>
   <v-app>
-    <!-- Navbar siempre visible -->
     <CustomNavbar />
-    <!-- El contenido de la vista actual -->
+
     <main>
-      <v-container>
+      <v-container fluid>
         <router-view />
       </v-container>
     </main>
-    <!-- Footer siempre visible -->
+
     <CustomFooter />
   </v-app>
 </template>
