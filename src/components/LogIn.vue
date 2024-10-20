@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <v-sheet class="pa-12" rounded>
-
-
-      <!-- Espacio agregado entre el v-app-bar y el formulario -->
       <v-card class="mx-auto px-6 py-8 mb-10" max-width="344">
         <v-sheet class="text-h5 text-center py-4"> Log In </v-sheet>
         <v-form v-model="form" @submit.prevent="onSubmit">
@@ -51,27 +48,26 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    form: false,
-    email: null,
-    password: null,
-    loading: false,
-  }),
+<script setup>
+import { ref } from 'vue'
+import router from '@/router/index.js'
 
-  methods: {
-    onSubmit() {
-      if (!this.form) return
+const form = ref(false);
+const email = ref(null);
+const password = ref(null);
+const loading = ref(false);
 
-      this.loading = true
+const onSubmit = () => {
+  if (!form.value) return
 
-      setTimeout(() => (this.loading = false), 2000)
-    },
-    required(v) {
-      return !!v || 'Field is required'
-    },
-  },
+  loading.value = true
+
+  setTimeout(() => (loading.value = false), 2000);
+  setTimeout(() => (router.push("/home")), 1000);
+}
+
+const required = (v) => {
+  return !!v || 'Field is required'
 }
 </script>
 
