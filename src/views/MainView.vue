@@ -34,6 +34,9 @@
             <v-btn class="mb-2" color="blue" @click="toggleOverlay(index)">
               Más info
             </v-btn>
+            <v-btn class="mb-2" color="success" @click="selectCourse(index)">
+              Seleccionar
+            </v-btn>
           </v-row>
         </v-card>
       </v-carousel-item>
@@ -54,7 +57,7 @@ export default {
       cards: [
         {
           title: 'Mallas y nodos',
-          content: 'Contenido del Curso ',
+          content: 'Contenido del Curso',
           overlay: false,
           subject: 'Circuitos',
           time: '09:00 AM - 10:30 AM',
@@ -72,7 +75,7 @@ export default {
         },
         {
           title: 'Herencia',
-          content: 'Contenido del Curso ',
+          content: 'Contenido del Curso',
           overlay: false,
           subject: 'Programacion 3',
           time: '01:00 PM - 02:30 PM',
@@ -97,6 +100,10 @@ export default {
     },
     hideOverlay(index) {
       this.cards[index].overlay = false;
+    },
+    selectCourse(index) {
+      // Lógica para seleccionar el curso
+      console.log(`Curso seleccionado: ${this.cards[index].title}`);
     },
   },
 };
