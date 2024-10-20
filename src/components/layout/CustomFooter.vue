@@ -1,7 +1,7 @@
 <template>
   <v-footer>
     <v-col class="text-center">
-      <span>&copy; 2024 Mi Aplicación</span>
+      <span>Universidad Politécnica de San Luis Potosí &copy; 2024</span>
     </v-col>
   </v-footer>
 </template>

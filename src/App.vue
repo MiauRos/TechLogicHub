@@ -3,9 +3,11 @@
     <!-- Navbar siempre visible -->
     <CustomNavbar />
     <!-- El contenido de la vista actual -->
-    <v-container>
-      <router-view />
-    </v-container>
+    <main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </main>
     <!-- Footer siempre visible -->
     <CustomFooter />
   </v-app>

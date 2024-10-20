@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar>
+  <v-app-bar color="#3386C1">
     <v-toolbar-title>Tech Logic Hub</v-toolbar-title>
 
     <v-spacer></v-spacer>
