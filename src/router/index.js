@@ -23,6 +23,20 @@ const router = createRouter({
       path: '/calendar',
       name: 'calendar',
       component: () => import('../views/SelectionView.vue'),
+    },{
+      path: '/createCourse',
+      name: 'createCourse',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/createCourseView.vue'),
+    },{
+      path: '/editCourse',
+      name: 'editCourse',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/editCourseView.vue'),
     },
   ],
 })
