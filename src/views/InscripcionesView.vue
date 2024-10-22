@@ -25,11 +25,16 @@
         <v-list>
           <v-list-item-group>
             <v-list-item
-              v-for="inscripcion in inscripciones"
+              v-for="inscripcion in newArray"
               :key="inscripcion.id"
             >
               <v-list-item-content>
-                <v-list-item-title>{{ inscripcion.cursoId }} - {{ inscripcion.alumnoId }}</v-list-item-title>
+                <v-list-item-title>
+                  Curso: {{inscripcion.cursoResponse.title}}<br>
+                  Fecha: {{inscripcion.cursoResponse.date}}<br>
+                  Inicio: {{inscripcion.cursoResponse.startTime}}<br>
+                  Alumno: {{inscripcion.userResponse.name}}
+                </v-list-item-title>
                 <v-list-item-actions>
                   <v-btn @click="editInscripcion(inscripcion.id)" icon>
                     <v-icon>mdi-pencil</v-icon>
@@ -80,14 +85,28 @@ export default {
         alumnoId: ''
       },
       editMode: false,
-      selectedInscripcion: {}
+      selectedInscripcion: {},
+      newArray: []
     };
   },
   methods: {
     async fetchInscripciones() {
       try {
         const response = await axios.get('http://localhost:3000/ins');
+        //Regresa arreglo (array), llamada para obtener los datos. Ciclo recorre array (response.data.idcurso)
+        for(let i = 0; i < response.data.length; i++){
+          let cResponse = await axios.get('http://localhost:3000/curso/'+response.data[i].cursoId);
+          let uResponse = await axios.get('http://localhost:3000/user/'+response.data[i].alumnoId);
+          this.newArray.push({
+            courseId: response.data[i].cursoId,
+            studentId: response.data[i].alumnoId,
+            cursoResponse: cResponse.data,
+            userResponse: uResponse.data
+          });
+        }
         this.inscripciones = response.data;
+        console.log(response.data);
+        console.log(this.newArray);
       } catch (error) {
         console.error('Error fetching inscripciones:', error);
       }
