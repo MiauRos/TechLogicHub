@@ -6,6 +6,8 @@
 
     <v-btn text to="/home" v-if="!show">Home</v-btn>
     <v-btn text to="/user" v-if="!show">User</v-btn>
+    <v-btn text to="/ins" v-if="!show">Register</v-btn>
+    <v-btn text to="/" v-if="!show">Log Out</v-btn>
   </v-app-bar>
 </template>
 
