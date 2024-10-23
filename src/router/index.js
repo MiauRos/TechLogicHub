@@ -35,6 +35,20 @@ const router = createRouter({
       path: '/editCourse',
       name: 'editCourse',
       component: () => import('../views/editCourseView.vue'),
+    },{
+      path: '/tutorHome',
+      name: 'tutorHome',
+      component: () => import('../views/TutorHomeView.vue'),
+    },
+    {
+      path: '/tus-cursos',
+      name: 'tus-cursos',
+      component: () => import('../views/CursosView.vue'),
+    },
+    {
+      path: '/cursosAsig',
+      name: 'cursosAsig',
+      component: () => import('../views/CursosAsigView.vue'),
     },
   ],
 })
