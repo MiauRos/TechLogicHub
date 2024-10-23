@@ -100,6 +100,7 @@ export default {
           let cResponse = await axios.get('http://localhost:3000/curso/'+response.data[i].cursoId);
           let uResponse = await axios.get('http://localhost:3000/user/'+response.data[i].alumnoId);
           this.newArray.push({
+            id: response.data[i].id,
             courseId: response.data[i].cursoId,
             studentId: response.data[i].alumnoId,
             cursoResponse: cResponse.data,

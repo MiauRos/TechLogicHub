@@ -42,7 +42,7 @@ import Titles from '@/components/Titles.vue'
 // TODO: Unharcode this data
 const user = ref({
   name: 'Carlos Mauricio Rosales Rodríguez',
-  email: '177691@upslp.edu.mx',
+  email: 'mau@gmail.com',
   password: 'PasswordExample'
 })
 
