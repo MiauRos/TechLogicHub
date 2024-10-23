@@ -1,5 +1,12 @@
 import express from 'express';
-import {getAllUser,getUser,createUser,deleteUser,updateUser} from '../controllers/UserController.js';
+import {
+  getAllUser,
+  getUser,
+  createUser,
+  deleteUser,
+  updateUser,
+  getUserByEmail
+} from '../controllers/UserController.js'
 import { deleteCurso, getAllCursos, getCurso, createCurso,updateCurso } from '../controllers/CursoController.js'
 import {
   createInscripcion, deleteInscripcion,
@@ -14,6 +21,7 @@ userRouter.get('/:id', getUser);
 userRouter.post('/', createUser);
 userRouter.put('/:id', updateUser);
 userRouter.delete('/:id', deleteUser);
+userRouter.get('/email/:email', getUserByEmail);
 
 const cursoRouter = express.Router();
 cursoRouter.get('/', getAllCursos);

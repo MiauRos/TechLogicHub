@@ -22,6 +22,19 @@ export const getUser=async (req,res)=>{
     res.json({message:err.message})
   }
 }
+
+export const getUserByEmail = async (req,res)=>{
+  try{
+    const user= await UserModel.findAll({
+      where:{
+        email:req.params.email
+      }
+    })
+    res.json(user[0])
+  }catch(err){
+    res.json({message:err.message})
+  }
+}
 //crear
 export const createUser=async (req,res)=>{
   try{

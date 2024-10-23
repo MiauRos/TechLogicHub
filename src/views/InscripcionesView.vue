@@ -1,7 +1,7 @@
 <template>
   <v-container>
+    <Titles title="Gestión de Inscripciones" />
     <v-card>
-      <v-card-title class="headline">Gestión de Inscripciones</v-card-title>
       <v-card-text>
         <v-form @submit.prevent="createInscripcion">
           <v-text-field
@@ -75,8 +75,10 @@
 
 <script>
 import axios from 'axios';
+import Titles from '@/components/Titles.vue'
 
 export default {
+  components: { Titles },
   data() {
     return {
       inscripciones: [],
@@ -115,7 +117,7 @@ export default {
       try {
         await axios.post('http://localhost:3000/ins', this.newInscripcion);
         this.newInscripcion = { cursoId: '', alumnoId: '' }; // Limpiar el formulario
-        this.fetchInscripciones(); // Actualizar la lista
+        window.location.reload();
       } catch (error) {
         console.error('Error creando inscripcion:', error);
       }
@@ -129,7 +131,7 @@ export default {
         await axios.put(`http://localhost:3000/ins/${this.selectedInscripcion.id}`, this.selectedInscripcion);
         this.editMode = false;
         this.selectedInscripcion = {};
-        this.fetchInscripciones(); // Actualizar la lista
+        window.location.reload();
       } catch (error) {
         console.error('Error actualizando inscripcion:', error);
       }
@@ -137,7 +139,7 @@ export default {
     async deleteInscripcion(id) {
       try {
         await axios.delete(`http://localhost:3000/ins/${id}`);
-        this.fetchInscripciones(); // Actualizar la lista
+        window.location.reload();
       } catch (error) {
         console.error('Error eliminando inscripcion:', error);
       }
