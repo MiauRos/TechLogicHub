@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-11-2024 a las 00:15:12
+-- Tiempo de generación: 22-11-2024 a las 00:39:18
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -41,17 +41,17 @@ CREATE TABLE `bank` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `curse`
+-- Estructura de tabla para la tabla `course`
 --
 
-CREATE TABLE `curse` (
+CREATE TABLE `course` (
   `id_c` int(11) NOT NULL,
   `id_p` int(11) NOT NULL,
   `id_a` int(11) NOT NULL,
   `id_m` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `hora_i` time NOT NULL,
-  `duracion` int(11) NOT NULL
+  `hora` time NOT NULL,
+  `duracion` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -132,9 +132,9 @@ ALTER TABLE `bank`
   ADD KEY `id_a` (`id_a`);
 
 --
--- Indices de la tabla `curse`
+-- Indices de la tabla `course`
 --
-ALTER TABLE `curse`
+ALTER TABLE `course`
   ADD PRIMARY KEY (`id_c`),
   ADD KEY `id_p` (`id_p`,`id_a`,`id_m`);
 
@@ -182,9 +182,9 @@ ALTER TABLE `bank`
   MODIFY `id_b` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `curse`
+-- AUTO_INCREMENT de la tabla `course`
 --
-ALTER TABLE `curse`
+ALTER TABLE `course`
   MODIFY `id_c` int(11) NOT NULL AUTO_INCREMENT;
 
 --
