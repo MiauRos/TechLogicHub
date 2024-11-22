@@ -7,13 +7,13 @@ import {
   updateUser,
   getUserByEmail
 } from '../controllers/UserController.js'
-import { deleteCurso, getAllCursos, getCurso, createCurso,updateCurso } from '../controllers/CursoController.js'
+/*import { deleteCurso, getAllCursos, getCurso, createCurso,updateCurso } from '../controllers/CursoController.js'
 import {
   createInscripcion, deleteInscripcion,
   getAllInscripciones,
   getInscripcion,
   updateInscripcion
-} from '../controllers/InscripcionesController.js'
+} from '../controllers/InscripcionesController.js'*/
 
 const userRouter = express.Router();
 userRouter.get('/', getAllUser);
@@ -22,7 +22,7 @@ userRouter.post('/', createUser);
 userRouter.put('/:id', updateUser);
 userRouter.delete('/:id', deleteUser);
 userRouter.get('/email/:email', getUserByEmail);
-
+/*
 const cursoRouter = express.Router();
 cursoRouter.get('/', getAllCursos);
 cursoRouter.get('/:id', getCurso);
@@ -36,11 +36,11 @@ insRouter.get('/:id', getInscripcion);
 insRouter.post('/', createInscripcion);
 insRouter.put('/:id', updateInscripcion); // Actualizar inscripción por ID único
 insRouter.delete('/:id', deleteInscripcion); // Eliminar inscripción por ID único
-
+*/
 
 export const Routers = {
   userRouter,
-  cursoRouter,
-  insRouter
+  //cursoRouter,
+  //insRouter
   //PIRouter,
 };
