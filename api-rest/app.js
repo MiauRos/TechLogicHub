@@ -12,6 +12,8 @@
   app.use('/teacher', Routers.teacherRouter);
   app.use('/student', Routers.studentRouter);
   app.use('/bank', Routers.bankRouter);
+  app.use('/course', Routers.courseRouter);
+  app.use('/subject', Routers.subjectRouter);
 
   try{
     await db.authenticate()

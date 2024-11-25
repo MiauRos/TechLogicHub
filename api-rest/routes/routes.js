@@ -39,6 +39,22 @@ import {
   updateBank,
   deleteBank
 } from '../controllers/BankController.js';
+
+import {
+  getAllCourses,
+  getCourse,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+} from '../controllers/CourseController.js';
+
+import {
+  getAllSubjects,
+  getSubject,
+  createSubject,
+  updateSubject,
+  deleteSubject,
+} from "../controllers/SubjectController.js";
 /*import { deleteCurso, getAllCursos, getCurso, createCurso,updateCurso } from '../controllers/CursoController.js'
 import {
   createInscripcion, deleteInscripcion,
@@ -86,6 +102,24 @@ bankRouter.post('/', createBank); // Crear un nuevo banco
 bankRouter.put('/:id_b', updateBank); // Actualizar un banco por ID
 bankRouter.delete('/:id_b', deleteBank); // Eliminar un banco por ID
 //userRouter.get('/email/:email', getUserByEmail);
+
+const courseRouter = express.Router();
+
+// Rutas para el CRUD de cursos
+courseRouter.get('/', getAllCourses); // Obtener todos los cursos
+courseRouter.get('/:id_c', getCourse); // Obtener un curso por ID
+courseRouter.post('/', createCourse); // Crear un nuevo curso
+courseRouter.put('/:id_c', updateCourse); // Actualizar un curso por ID
+courseRouter.delete('/:id_c', deleteCourse); // Eliminar un curso por ID
+
+const subjectRouter = express.Router();
+
+// Rutas para el CRUD de materias
+subjectRouter.get("/", getAllSubjects); // Obtener todas las materias
+subjectRouter.get("/:id_m", getSubject); // Obtener una materia por ID
+subjectRouter.post("/", createSubject); // Crear una nueva materia
+subjectRouter.put("/:id_m", updateSubject); // Actualizar una materia por ID
+subjectRouter.delete("/:id_m", deleteSubject); // Eliminar una materia por ID
 /*
 const cursoRouter = express.Router();
 cursoRouter.get('/', getAllCursos);
@@ -107,7 +141,9 @@ export const Routers = {
   typeRouter,
   teacherRouter,
   studentRouter,
-  bankRouter
+  bankRouter,
+  courseRouter,
+  subjectRouter
   //cursoRouter,
   //insRouter
   //PIRouter,
