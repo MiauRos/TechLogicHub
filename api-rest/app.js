@@ -8,9 +8,12 @@
   app.use(express.json());
 
   app.use('/user', Routers.userRouter);
-  app.use('/curso', Routers.cursoRouter);
-  app.use('/ins',Routers.insRouter);
-
+  app.use('/type', Routers.typeRouter);
+  app.use('/teacher', Routers.teacherRouter);
+  app.use('/student', Routers.studentRouter);
+  app.use('/bank', Routers.bankRouter);
+  app.use('/course', Routers.courseRouter);
+  app.use('/subject', Routers.subjectRouter);
 
   try{
     await db.authenticate()
