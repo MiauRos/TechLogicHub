@@ -5,7 +5,7 @@ import {
   createUser,
   deleteUser,
   updateUser,
-  //getUserByEmail
+  getUserByEmail
 } from '../controllers/UserController.js'
 
 import {
@@ -69,6 +69,7 @@ userRouter.get('/:id', getUser);
 userRouter.post('/', createUser);
 userRouter.put('/:id', updateUser);
 userRouter.delete('/:id', deleteUser);
+userRouter.get('/email/:email', getUserByEmail);
 
 const typeRouter = express.Router();
 typeRouter.get('/', getAllTypes);
@@ -101,7 +102,6 @@ bankRouter.get('/:id_b', getBank); // Obtener un banco por ID
 bankRouter.post('/', createBank); // Crear un nuevo banco
 bankRouter.put('/:id_b', updateBank); // Actualizar un banco por ID
 bankRouter.delete('/:id_b', deleteBank); // Eliminar un banco por ID
-//userRouter.get('/email/:email', getUserByEmail);
 
 const courseRouter = express.Router();
 
