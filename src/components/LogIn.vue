@@ -79,15 +79,17 @@ const loading = ref(false);
 const message = ref('');
 
 const onSubmit = async () => {
+  loading.value = true;
   try {
     let res = await axios.get(
       `http://localhost:3000/user/email/${email.value}`
     );
     if (res.data && res.data.password === password.value) {
       message.value = "";
-      loading.value = true;
       if (res.data.type == 1) {
         await getStudentData(res.data.id);
+      } else {
+        await getTeacherData(res.data.id);
       }
       setTimeout(() => {
         loading.value = false;
@@ -101,11 +103,17 @@ const onSubmit = async () => {
     message.value = "Usuario o Contraseña incorrecto";
     email.value = '';
     password.value = '';
+    loading.value = false;
   }
 };
 
 const getStudentData = async (id) => {
-  let userData = await axios.get(`http://localhost:3000/student/${id}`);
+  let userData = await axios.get(`http://localhost:3000/student/user/${id}`);
+  localStorage.setItem('user', JSON.stringify(userData.data));
+}
+
+const getTeacherData = async (id) => {
+  let userData = await axios.get(`http://localhost:3000/teacher/user/${id}`);
   localStorage.setItem('user', JSON.stringify(userData.data));
 }
 

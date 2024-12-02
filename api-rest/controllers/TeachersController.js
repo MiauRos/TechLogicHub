@@ -1,4 +1,5 @@
 import TeachersModel from '../models/TeachersModel.js';
+import StudentsModel from '../models/StudentsModel.js'
 
 // Obtener todos los profesores
 export const getAllTeachers = async (req, res) => {
@@ -18,6 +19,21 @@ export const getTeacher = async (req, res) => {
       res.status(200).json(teacher); // Retorna el profesor si lo encuentra
     } else {
       res.status(404).json({ message: 'Profesor no encontrado' }); // Si no se encuentra el profesor
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message }); // Error en caso de fallo en la consulta
+  }
+};
+
+export const getTeacherByUserId = async (req, res) => {
+  try {
+    const teacher = await TeachersModel.findOne({
+      where: { id: req.params.id }, // Buscar por la llave foránea (id)
+    });
+    if (teacher) {
+      res.status(200).json(teacher); // Retorna el tutor si lo encuentra
+    } else {
+      res.status(404).json({ message: 'Tutor no encontrado' }); // Si no se encuentra el Tutor
     }
   } catch (err) {
     res.status(500).json({ message: err.message }); // Error en caso de fallo en la consulta
