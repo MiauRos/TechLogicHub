@@ -9,18 +9,19 @@ import {
 } from '../controllers/UserController.js'
 
 import {
-  getAllTeachers  ,
-  getTeacher  ,
-  createTeacher  ,
-  updateTeacher  ,
-  deleteTeacher
+  getAllTeachers,
+  getTeacher,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
+  getTeacherByUserId
 } from '../controllers/TeachersController.js'
 
 import {
-  getAllTypes ,
-  getType ,
-  createType ,
-  updateType ,
+  getAllTypes,
+  getType,
+  createType,
+  updateType,
   deleteType
 } from '../controllers/TypeController.js'
 
@@ -85,6 +86,7 @@ teacherRouter.get('/:id_p', getTeacher);
 teacherRouter.post('/', createTeacher);
 teacherRouter.put('/:id_p', updateTeacher);
 teacherRouter.delete('/:id_p', deleteTeacher);
+teacherRouter.get('/user/:id', getTeacherByUserId);
 
 const studentRouter = express.Router();
 
@@ -94,7 +96,7 @@ studentRouter.get('/:id_a', getStudent); // Obtener un estudiante por ID
 studentRouter.post('', createStudent); // Crear un nuevo estudiante
 studentRouter.put('/:id_a', updateStudent); // Actualizar un estudiante por ID
 studentRouter.delete('/:id_a', deleteStudent); // Eliminar un estudiante por ID
-studentRouter.get('/:id', getStudentByUserId); // Obtener datos del estudiante mediante el id de usuario
+studentRouter.get('/user/:id', getStudentByUserId); // Obtener datos del estudiante mediante el id de usuario
 
 const bankRouter = express.Router();
 

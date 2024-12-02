@@ -35,20 +35,22 @@ const props = defineProps({
   }
 })
 
-const color = ref('#3386C1')
+const color = ref('#FFFFFF')
 </script>
 
 <style scoped>
 .page-title-card {
-  background-color: #f5f5f5; /* Color de fondo claro */
-  border-radius: 8px; /* Esquinas redondeadas */
-  padding: 16px; /* Espaciado interno */
-  margin-bottom: 20px; /* Margen inferior */
+  background-color: #10193A; /* Fondo azul consistente con el login */
+  color: white; /* Texto blanco */
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
 }
 
 .title {
-  font-size: 24px; /* Tamaño del título */
-  font-weight: bold; /* Negrita */
+  font-size: 24px;
+  font-weight: bold;
+  color: white; /* Texto blanco */
 }
 
 .subtitle {
