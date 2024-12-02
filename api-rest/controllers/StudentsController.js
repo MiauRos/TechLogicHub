@@ -24,6 +24,21 @@ export const getStudent = async (req, res) => {
   }
 };
 
+export const getStudentByUserId = async (req, res) => {
+  try {
+    const student = await StudentsModel.findOne({
+      where: { id: req.params.id }, // Buscar por la llave foránea (id)
+    });
+    if (student) {
+      res.status(200).json(student); // Retorna el estudiante si lo encuentra
+    } else {
+      res.status(404).json({ message: 'Estudiante no encontrado' }); // Si no se encuentra el estudiante
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message }); // Error en caso de fallo en la consulta
+  }
+};
+
 // Crear un nuevo estudiante
 export const createStudent = async (req, res) => {
   try {

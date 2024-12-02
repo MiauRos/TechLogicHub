@@ -29,7 +29,8 @@ import {
   getStudent,
   createStudent,
   updateStudent,
-  deleteStudent
+  deleteStudent,
+  getStudentByUserId
 } from '../controllers/StudentsController.js'
 
 import {
@@ -93,6 +94,7 @@ studentRouter.get('/:id_a', getStudent); // Obtener un estudiante por ID
 studentRouter.post('', createStudent); // Crear un nuevo estudiante
 studentRouter.put('/:id_a', updateStudent); // Actualizar un estudiante por ID
 studentRouter.delete('/:id_a', deleteStudent); // Eliminar un estudiante por ID
+studentRouter.get('/:id', getStudentByUserId); // Obtener datos del estudiante mediante el id de usuario
 
 const bankRouter = express.Router();
 
