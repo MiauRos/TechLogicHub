@@ -21,8 +21,14 @@ import router from '@/router/index.js'
 import { computed } from 'vue'
 
 const student = computed(() => {
-  let user = JSON.parse(localStorage.getItem('user'))
-  return !!user.mat;
+  let user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    if (user.mat) {
+      return true;
+    }
+  } else {
+    return false;
+  }
 })
 
 const show = computed(() => {
