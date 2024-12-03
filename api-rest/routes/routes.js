@@ -48,6 +48,7 @@ import {
   createCourse,
   updateCourse,
   deleteCourse,
+  getCourseByIdA
 } from '../controllers/CourseController.js';
 
 import {
@@ -57,13 +58,6 @@ import {
   updateSubject,
   deleteSubject,
 } from "../controllers/SubjectController.js";
-/*import { deleteCurso, getAllCursos, getCurso, createCurso,updateCurso } from '../controllers/CursoController.js'
-import {
-  createInscripcion, deleteInscripcion,
-  getAllInscripciones,
-  getInscripcion,
-  updateInscripcion
-} from '../controllers/InscripcionesController.js'*/
 
 const userRouter = express.Router();
 userRouter.get('/', getAllUser);
@@ -115,6 +109,7 @@ courseRouter.get('/:id_c', getCourse); // Obtener un curso por ID
 courseRouter.post('/', createCourse); // Crear un nuevo curso
 courseRouter.put('/:id_c', updateCourse); // Actualizar un curso por ID
 courseRouter.delete('/:id_c', deleteCourse); // Eliminar un curso por ID
+courseRouter.get('/student/:id_a', getCourseByIdA);
 
 const subjectRouter = express.Router();
 

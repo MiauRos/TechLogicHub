@@ -69,3 +69,18 @@ export const deleteCourse = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getCourseByIdA = async (req, res) => {
+  try {
+    const courses = await CourseModel.findAll({
+      where: { id_a: req.params.id_a }
+    });
+    if (courses) {
+      res.json(courses);
+    } else {
+      res.status(404).json({ message: 'Curso no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
