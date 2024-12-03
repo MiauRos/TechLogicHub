@@ -1,122 +1,54 @@
 <template>
-  <v-container class="d-flex align-center justify-center fill-height">
-    <v-row justify="center" align="center" class="my-5"> <!-- Agregar margen vertical -->
-      <!-- Tarjeta 1: Tus Cursos -->
-      <v-col cols="12" md="6" lg="4">
-        <v-card class="mx-auto" max-width="600" style="background-color: #f9c2c2; height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center;"> <!-- Aumentar max-width y height -->
-          <v-card-title class="text-center" style="font-size: 1.8rem;">Tus Cursos</v-card-title> <!-- Aumentar tamaño de fuente -->
-          <v-card-actions class="justify-center">
-            <v-btn large color="primary" @click="goToPage('/tus-cursos')" style="font-size: 1.2rem;"> <!-- Aumentar tamaño de botón -->
-              Ver Cursos
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-
-      <!-- Tarjeta 2: Cursos Agendados -->
-      <v-col cols="12" md="6" lg="4">
-        <v-card class="mx-auto" max-width="600" style="background-color: #c2e1f9; height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center;"> <!-- Aumentar max-width y height -->
-          <v-card-title class="text-center" style="font-size: 1.8rem;">Cursos Agendados</v-card-title> <!-- Aumentar tamaño de fuente -->
-          <v-card-actions class="justify-center">
-            <v-btn large color="success" @click="goToPage('/cursosAsig')" style="font-size: 1.2rem;">
-              Ver Agendados
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-
-      <!-- Tarjeta 3: Calificaciones -->
-      <v-col cols="12" md="6" lg="4">
-        <v-card class="mx-auto" max-width="600" style="background-color: #c2f9c2; height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center;"> <!-- Aumentar max-width y height -->
-          <v-card-title class="text-center" style="font-size: 1.8rem;">Calificaciones</v-card-title> <!-- Aumentar tamaño de fuente -->
-          <v-card-actions class="justify-center">
-            <v-btn large color="info" @click="showAlert" style="font-size: 1.2rem;">
-              Ver Calificaciones
-            </v-btn>
-          </v-card-actions>
+  <v-container class="welcome-container" fill-height>
+    <v-row align="center" justify="center" class="text-center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-8">
+          <v-card-title>
+            <h1>¡Bienvenido{{ userName ? `, ${userName}` : '' }}!</h1>
+          </v-card-title>
+          <v-card-text>
+            <p>Estamos encantados de tenerte aquí. Explora las opciones y selecciona la que necesites.</p>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- Mostrar alerta -->
-    <v-alert
-      v-if="alertVisible"
-      type="info"
-      border="top"
-      prominent
-      class="my-alert"
-      transition="scale-transition"
-      dismissible
-      @input="alertVisible = false"
-    >
-      Tus calificaciones están disponibles en la sección correspondiente. ¡Revísalas ahora!
-    </v-alert>
-
-    <!-- Botón flotante con icono de calendario -->
-    <v-btn
-      fab
-      dark
-      color="primary"
-      class="floating-btn"
-      @click="openCalendar"
-    >
-      <v-icon>mdi-calendar</v-icon>
-    </v-btn>
   </v-container>
 </template>
 
-<script>
-import router from '@/router/index.js';
+<script setup>
+import { ref, onMounted } from 'vue';
 
-export default {
-  data() {
-    return {
-      alertVisible: false, // Controlar la visibilidad del alert
-    };
-  },
-  methods: {
-    goToPage(route) {
-      // Redirige a la página seleccionada
-      router.push(route);
-    },
-    openCalendar() {
-      // Lógica para abrir el calendario
-      router.push("/calendar");
-    },
-    showAlert() {
-      // Mostrar el alert cuando se presiona "Ver Calificaciones"
-      this.alertVisible = true;
-    },
-  },
-};
+// Estado
+const userName = ref(null);
+
+// Obtener el nombre del usuario al montar la página
+onMounted(() => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  userName.value = user?.name || 'Usuario';
+});
 </script>
 
 <style scoped>
-/* Estilo para centrar todo el contenido */
-.fill-height {
+.welcome-container {
+  background-image: url('https://static.vecteezy.com/system/resources/previews/000/938/594/non_2x/high-school-students-raising-their-hands-in-a-classroom-photo.jpg');
+  background-size: cover;
+  background-position: center;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  padding-bottom: 64px; /* Para que el botón flotante no se sobreponga al contenido */
+  justify-content: center;
+  align-items: center;
+  color: white; /* Asegura que el texto sea legible sobre el fondo */
 }
 
-/* Estilo del botón flotante */
-.floating-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-}
-
-/* Estilo del alert */
-.my-alert {
-  position: fixed;
-  bottom: 100px; /* Aumentamos la distancia del bottom */
-  width: 80%;
-  left: 10%;
+.text-center {
   text-align: center;
-  font-size: 16px;
-  z-index: 1000;
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+.v-btn {
+  background-color: #10193A;
 }
 </style>

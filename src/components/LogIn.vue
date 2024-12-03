@@ -77,6 +77,7 @@ const email = ref('');
 const password = ref('');
 const loading = ref(false);
 const message = ref('');
+const route = ref('');
 
 const onSubmit = async () => {
   loading.value = true;
@@ -87,13 +88,15 @@ const onSubmit = async () => {
     if (res.data && res.data.password === password.value) {
       message.value = "";
       if (res.data.type == 1) {
+        route.value = '/home';
         await getStudentData(res.data.id);
       } else {
+        route.value = '/tutorHome'
         await getTeacherData(res.data.id);
       }
       setTimeout(() => {
         loading.value = false;
-        router.push("/home");
+        router.push(route.value);
       }, 2000);
     } else {
       throw new Error("Usuario o Contraseña incorrecto");

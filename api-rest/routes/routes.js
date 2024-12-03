@@ -48,7 +48,8 @@ import {
   createCourse,
   updateCourse,
   deleteCourse,
-  getCourseByIdA
+  getCourseByIdA,
+  getCourseByIdP
 } from '../controllers/CourseController.js';
 
 import {
@@ -110,6 +111,7 @@ courseRouter.post('/', createCourse); // Crear un nuevo curso
 courseRouter.put('/:id_c', updateCourse); // Actualizar un curso por ID
 courseRouter.delete('/:id_c', deleteCourse); // Eliminar un curso por ID
 courseRouter.get('/student/:id_a', getCourseByIdA);
+courseRouter.get('/teacher/:id_p', getCourseByIdP);
 
 const subjectRouter = express.Router();
 

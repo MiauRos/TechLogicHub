@@ -20,8 +20,8 @@ const router = createRouter({
       component: () => import('../views/MainView.vue'),
     },
     {
-      path: '/calendar',
-      name: 'calendar',
+      path: '/selectCourse',
+      name: 'selectCourse',
       component: () => import('../views/SelectionView.vue'),
     },{
       path: '/ins',
