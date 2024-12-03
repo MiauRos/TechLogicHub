@@ -2,7 +2,7 @@
   <v-footer color="#10193A">
     <v-col class="text-center py-2">
       <span class="text-white text-body-2">
-        Made with love in Universidad Politécnica de San Luis Potosí &copy; 2024
+        Made with ❤ by TLH team &copy; 2024
       </span>
     </v-col>
   </v-footer>

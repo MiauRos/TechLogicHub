@@ -1,137 +1,54 @@
 <template>
-  <v-container>
-    <!-- Carrusel con los cursos -->
-    <v-carousel hide-delimiter-background show-arrows show-indicators>
-      <v-carousel-item v-for="(card, index) in cards" :key="index">
-        <v-card height="400" width="250" class="mx-auto">
-          <!-- Imagen en la parte superior del Curso -->
-          <v-img :src="card.image" height="200" />
-
-          <v-card-title>{{ card.title }}</v-card-title>
-          <v-card-text v-if="!card.overlay">{{ card.content }}</v-card-text>
-
-          <v-overlay v-model="card.overlay" class="align-center justify-center" contained>
-            <v-card class="pa-4">
-              <v-card-title>Detalles del Curso</v-card-title>
-              <v-card-text>
-                <p><strong>Materia:</strong> {{ card.subject }}</p>
-                <p><strong>Hora:</strong> {{ card.time }}</p>
-                <p><strong>Profesor:</strong> {{ card.teacher }}</p>
-              </v-card-text>
-              <v-row justify="center">
-                <v-btn color="gray" @click="hideOverlay(index)"> Regresar </v-btn>
-              </v-row>
-            </v-card>
-          </v-overlay>
-
-          <v-row justify="center" class="mt-auto" v-if="!card.overlay">
-            <v-btn class="mb-2" color="blue" @click="toggleOverlay(index)"> Más info </v-btn>
-            <v-btn class="mb-2" color="success" @click="selectCourse(index)"> Seleccionar </v-btn>
-          </v-row>
+  <v-container class="welcome-container" fill-height>
+    <v-row align="center" justify="center" class="text-center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-8">
+          <v-card-title>
+            <h1>¡Bienvenido{{ userName ? `, ${userName}` : '' }}!</h1>
+          </v-card-title>
+          <v-card-text>
+            <p>Estamos encantados de tenerte aquí. Explora las opciones y selecciona la que necesites.</p>
+          </v-card-text>
         </v-card>
-      </v-carousel-item>
-    </v-carousel>
-
-    <!-- Botón flotante con icono de calendario -->
-    <v-btn
-      fab
-      dark
-      color="primary"
-      class="floating-btn"
-      @click="openCalendar"
-
-    >
-      <v-icon>mdi-calendar</v-icon>
-    </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
-<script>
-// Importa tus imágenes desde la carpeta assets
-import img1 from '@/assets/circuitos.jpg';
-import img2 from '@/assets/fisica.jpg';
-import img3 from '@/assets/progra.jpg';
-import img4 from '@/assets/quimica.jpg';
-import router from '@/router/index.js'
+<script setup>
+import { ref, onMounted } from 'vue';
 
-export default {
-  data() {
-    return {
-      cards: [
-        {
-          title: 'Mallas y nodos',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Circuitos',
-          time: '09:00 AM - 10:30 AM',
-          teacher: 'Profesor Pérez',
-          image: img1,  // Usa la imagen importada
-        },
-        {
-          title: 'Fuerza',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Fisica',
-          time: '11:00 AM - 12:30 PM',
-          teacher: 'Profesora López',
-          image: img2,  // Usa la imagen importada
-        },
-        {
-          title: 'Herencia',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Programacion 3',
-          time: '01:00 PM - 02:30 PM',
-          teacher: 'Profesor González',
-          image: img3,  // Usa la imagen importada
-        },
-        {
-          title: 'Tabla periodica',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Quimica',
-          time: '03:00 PM - 04:30 PM',
-          teacher: 'Profesora Rodríguez',
-          image: img4,  // Usa la imagen importada
-        },
-      ],
-    };
-  },
-  methods: {
-    toggleOverlay(index) {
-      this.cards[index].overlay = !this.cards[index].overlay;
-    },
-    hideOverlay(index) {
-      this.cards[index].overlay = false;
-    },
-    selectCourse(index) {
-      // Lógica para seleccionar el curso
-      console.log(`Curso seleccionado: ${this.cards[index].title}`);
-    },
-    openCalendar() {
-      // Aquí agregas la lógica para abrir el calendario o realizar la acción que quieras
-      console.log('Abriendo calendario...');
-      router.push("/calendar");
-    },
-  },
-};
+// Estado
+const userName = ref(null);
+
+// Obtener el nombre del usuario al montar la página
+onMounted(() => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  userName.value = user?.name || 'Usuario';
+});
 </script>
 
 <style scoped>
-.v-carousel-item {
+.welcome-container {
+  background-image: url('https://static.vecteezy.com/system/resources/previews/000/938/594/non_2x/high-school-students-raising-their-hands-in-a-classroom-photo.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  color: white; /* Asegura que el texto sea legible sobre el fondo */
 }
 
-.mt-auto {
-  margin-top: auto; /* Empuja el botón hacia la parte inferior */
+.text-center {
+  text-align: center;
 }
 
-/* Estilo del botón flotante */
-.floating-btn {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
+.mt-4 {
+  margin-top: 16px;
+}
+
+.v-btn {
+  background-color: #10193A;
 }
 </style>

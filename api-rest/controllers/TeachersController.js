@@ -1,5 +1,4 @@
 import TeachersModel from '../models/TeachersModel.js';
-import StudentsModel from '../models/StudentsModel.js'
 
 // Obtener todos los profesores
 export const getAllTeachers = async (req, res) => {

@@ -1,126 +1,193 @@
 <template>
-  <v-container>
-    <!-- Botón para regresar -->
-    <v-row justify="start">
-      <v-btn color="primary" @click="goBack">Regresar</v-btn>
-    </v-row>
+  <v-container class="mt-12 container">
+    <Titles title="Cursos" class="mb-4" />
+    <v-container class="scrollable">
+      <v-row>
+        <v-col
+          v-for="subject in subjectList"
+          :key="subject.id_m"
+          cols="12" md="6" lg="6"
+        >
+          <v-card class="mb-4">
+            <v-img :src="image" height="150px"></v-img>
+            <v-card-title>{{ subject.name }}</v-card-title>
+            <v-card-subtitle>{{ subject.descr }}</v-card-subtitle>
+            <v-card-actions class="justify-center">
+              <v-btn
+                color="white"
+                @click="openDialog(subject)"
+                style="background-color: #10193A"
+              >
+                Seleccionar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h5">Seleccionar Materia</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="formIsValid">
+            <v-text-field
+              v-model="selectedSubject.name"
+              label="Nombre de la materia"
+              disabled
+            ></v-text-field>
 
-    <!-- Calendario -->
-    <v-row justify="space-around">
-      <v-date-picker
-        color="#3386C1"
-        show-adjacent-months
-        v-model="selectedDate"
-        @input="checkClasses"
-      ></v-date-picker>
-    </v-row>
+            <v-select
+              label="Tutor de la materia"
+              v-model="selectedTeacher"
+              :items="names"
+              @change="getTeacher"
+            />
 
-    <!-- Si hay clases para la fecha seleccionada, se muestran aquí -->
-    <v-row justify="center" v-if="classesForDate.length > 0">
-      <v-col cols="12" md="6">
-        <v-card class="pa-4" outlined>
-          <v-card-title>
-            Clases para {{ selectedDateFormatted }}
-          </v-card-title>
-          <v-card-text>
-            <ul>
-              <li v-for="(clase, index) in classesForDate" :key="index">
-                <strong>{{ clase.subject }}</strong> con {{ clase.teacher }} a las {{ clase.time }}
-              </li>
-            </ul>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-text-field
+              v-model="course.fecha"
+              label="Fecha de la clase"
+              readonly
+              append-icon="mdi-calendar"
+              @click="menuFecha = true"
+              :value="formatDate(course.fecha)"
+            />
 
-    <!-- Si no hay clases programadas para la fecha seleccionada -->
-    <v-row justify="center" v-else>
-      <v-col cols="12" md="6">
-        <v-card class="pa-1" outlined>
-          <v-card-title>
-            No hay clases programadas para {{ selectedDateFormatted }}
-          </v-card-title>
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-menu v-model="menuFecha" :close-on-content-click="true" transition="slide-x-reverse" offset-y>
+              <v-date-picker v-model="course.fecha" type="date"></v-date-picker>
+            </v-menu>
+
+            <v-select
+              v-model="course.hora"
+              :items="hourOptions"
+              label="Hora de la clase"
+              item-text="label"
+              item-value="value"
+              return-object
+              required
+            ></v-select>
+
+            <v-select
+              v-model="course.duracion"
+              :items="durationOptions"
+              label="Duración de la clase"
+              item-text="label"
+              item-value="value"
+              required
+            ></v-select>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="white" style="background-color: red" @click="dialog = false">Volver</v-btn>
+          <v-btn text color="white" style="background-color: #10193A" @click="createCourse" :disabled="!formIsValid">Seleccionar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
-<script>
+<script setup>
+import Titles from '@/components/Titles.vue';
+import { onBeforeMount, onMounted, ref } from 'vue'
+import axios from 'axios';
+import image from '@/assets/courses.jpg'
 import router from '@/router/index.js'
 
-export default {
-  data() {
-    return {
-      // Fecha seleccionada en el calendario
-      selectedDate: null,
-      // Clases simuladas con fechas como cadenas en formato 'YYYY-MM-DD'
-      classes: [
-        {
-          date: '2024-10-21',
-          subject: 'Circuitos',
-          teacher: 'Profesor Pérez',
-          time: '09:00 AM - 10:30 AM',
-        },
-        {
-          date: '2024-10-21',
-          subject: 'Programación',
-          teacher: 'Profesora López',
-          time: '11:00 AM - 12:30 PM',
-        },
-        {
-          date: '2024-10-22',
-          subject: 'Matemáticas',
-          teacher: 'Profesor García',
-          time: '01:00 PM - 02:30 PM',
-        },
-      ],
-      // Almacena las clases que se muestran según la fecha seleccionada
-      classesForDate: [],
-    };
-  },
-  computed: {
-    // Formatea la fecha seleccionada para mostrarla correctamente
-    selectedDateFormatted() {
-      return this.selectedDate
-        ? new Date(this.selectedDate).toLocaleDateString()
-        : '';
-    },
-  },
-  methods: {
-    // Verifica si hay clases programadas para la fecha seleccionada
-    checkClasses() {
-      console.log('Fecha seleccionada:', this.selectedDate);
+const subjectList = ref([]);
+const dialog = ref(false);
+const selectedSubject = ref({});
+const formIsValid = ref(false);
+const teachers = ref([]);
+const names = ref([]);
+const selectedTeacher = ref(null);
+const course = ref({
+  id_p: null,
+  id_a: null,
+  id_m: null,
+  fecha: null,
+  hora: null,
+  duracion: null,
+});
+const index = ref(0);
+const user = ref({});
+const menuFecha = ref(false);
+const hourOptions = ref([]);
+const durationOptions = ref([0.5, 1]);
 
-      if (this.selectedDate) {
-        const selectedDateStr = this.formatDate(this.selectedDate);
-        console.log('Fecha seleccionada (formateada):', selectedDateStr);
+onBeforeMount(() => {
+  const start = 10;  // 10 AM
+  const end = 17;    // 5 PM
+  const options = [];
+  for (let hour = start; hour <= end; hour++) {
+    for (let minute = 0; minute < 60; minute += 30) {
+      const value = `${hour < 10 ? '0' + hour : hour}:${minute === 0 ? '00' : '30'}`;
+      options.push(value);
+    }
+  }
+  hourOptions.value = options;
+})
 
-        this.classesForDate = this.classes.filter((clase) => {
-          console.log('Comparando con clase:', clase.date);
-          return clase.date === selectedDateStr;
-        });
-        console.log('Clases encontradas:', this.classesForDate);
-      }
-    },
-    // Función para formatear la fecha a 'YYYY-MM-DD'
-    formatDate(date) {
-      const d = new Date(date);
-      let month = '' + (d.getMonth() + 1);
-      let day = '' + d.getDate();
-      const year = d.getFullYear();
+onMounted(async () => {
+  try {
+    let res = await axios.get(`http://localhost:3000/subject/`);
+    subjectList.value = res.data;
+    user.value = JSON.parse(localStorage.getItem('user'));
+    let res2 = await axios.get(`http://localhost:3000/teacher/`);
+    teachers.value = res2.data;
+    names.value = teachers.value.map(teacher => teacher.name);
+    console.log(teachers.value);
+  } catch (e) {
+    console.log(e);
+  }
+});
 
-      if (month.length < 2) month = '0' + month;
-      if (day.length < 2) day = '0' + day;
+const openDialog = (subject) => {
+  dialog.value = true;
+  selectedSubject.value = subject;
+  course.value.id_m = subject.id_m;
+  course.value.id_a = user.value.id_a;
+}
 
-      return [year, month, day].join('-');
-    },
-    // Función para regresar a la página anterior
-    goBack() {
-      router.push("/home") // Navega hacia la página anterior en el historial
-    },
-  },
-};
+const createCourse = async () => {
+  course.value.id_p = teachers.value[index.value].id_p;
+  let d = course.value.fecha;
+  course.value.fecha = d.toISOString().split('T')[0];
+  try {
+    await axios.post(`http://localhost:3000/course/`, course.value);
+  } catch (e) {
+    console.log(e);
+  }
+  dialog.value = false;
+  router.push('/ins');
+}
+
+const getTeacher = () => {
+  index.value = names.value.findIndex(name => name === selectedTeacher.value);
+}
+
+const formatDate = (date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  return d.toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  padding: 100px;
+}
+
+.scrollable {
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 16px;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+</style>

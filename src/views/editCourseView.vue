@@ -9,7 +9,7 @@
       <!-- Recorremos la lista de cursos para mostrarlos en tarjetas -->
       <v-col v-for="(curso, index) in cursos" :key="index" cols="12" md="6" lg="4">
         <v-card>
-          <v-img :src="curso.image" height="200px"></v-img>
+
 
           <v-card-title>{{ curso.title }}</v-card-title>
           <v-card-subtitle>{{ curso.subject }}</v-card-subtitle>
@@ -34,10 +34,6 @@
 </template>
 
 <script>
-import img1 from '@/assets/circuitos.jpg';
-import img2 from '@/assets/fisica.jpg';
-import img3 from '@/assets/progra.jpg';
-import img4 from '@/assets/quimica.jpg';
 
 export default {
   data() {
@@ -50,7 +46,6 @@ export default {
           subject: 'Circuitos',
           time: '09:00 AM - 10:30 AM',
           teacher: 'Profesor Pérez',
-          image: img1,
         },
         {
           title: 'Fuerza',
@@ -59,7 +54,6 @@ export default {
           subject: 'Fisica',
           time: '11:00 AM - 12:30 PM',
           teacher: 'Profesora López',
-          image: img2,
         },
         {
           title: 'Herencia',
@@ -68,7 +62,6 @@ export default {
           subject: 'Programacion 3',
           time: '01:00 PM - 02:30 PM',
           teacher: 'Profesor González',
-          image: img3,
         },
         {
           title: 'Tabla periodica',
@@ -77,7 +70,6 @@ export default {
           subject: 'Quimica',
           time: '03:00 PM - 04:30 PM',
           teacher: 'Profesora Rodríguez',
-          image: img4,
         },
       ],
     };
