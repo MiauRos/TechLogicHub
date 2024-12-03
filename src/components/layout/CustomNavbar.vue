@@ -7,11 +7,11 @@
     <v-btn to="/" v-if="show" class="text-white">Register</v-btn>
     <v-btn to="/home" v-if="!show && student" class="text-white">Home</v-btn>
     <v-btn to="/tutorHome" v-if="!show && !student" class="text-white">Home</v-btn>
-    <v-btn to="/user" v-if="!show" class="text-white">User</v-btn>
     <v-btn to="/ins" v-if="!show && student" class="text-white">My courses</v-btn>
     <v-btn to="/tus-cursos" v-if="!show && !student" class="text-white">My courses</v-btn>
     <v-btn to="/selectCourse" v-if="!show && student" class="text-white">Select Course</v-btn>
     <v-btn to="/createCourse" v-if="!show && !student" class="text-white">Create Course</v-btn>
+    <v-btn to="/user" v-if="!show" class="text-white">User</v-btn>
     <v-btn to="/" v-if="!show" class="text-white" @click="logOut">Log Out</v-btn>
   </v-app-bar>
 </template>
