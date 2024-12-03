@@ -1,137 +1,193 @@
 <template>
-  <v-container>
-    <!-- Carrusel con los cursos -->
-    <v-carousel hide-delimiter-background show-arrows show-indicators>
-      <v-carousel-item v-for="(card, index) in cards" :key="index">
-        <v-card height="400" width="250" class="mx-auto">
-          <!-- Imagen en la parte superior del Curso -->
-          <v-img :src="card.image" height="200" />
+  <v-container class="mt-12 container">
+    <Titles title="Cursos" class="mb-4" />
+    <v-container class="scrollable">
+      <v-row>
+        <v-col
+          v-for="subject in subjectList"
+          :key="subject.id_m"
+          cols="12" md="6" lg="6"
+        >
+          <v-card class="mb-4">
+            <v-img :src="image" height="150px"></v-img>
+            <v-card-title>{{ subject.name }}</v-card-title>
+            <v-card-subtitle>{{ subject.descr }}</v-card-subtitle>
+            <v-card-actions class="justify-center">
+              <v-btn
+                color="white"
+                @click="openDialog(subject)"
+                style="background-color: #10193A"
+              >
+                Seleccionar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h5">Seleccionar Materia</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="formIsValid">
+            <v-text-field
+              v-model="selectedSubject.name"
+              label="Nombre de la materia"
+              disabled
+            ></v-text-field>
 
-          <v-card-title>{{ card.title }}</v-card-title>
-          <v-card-text v-if="!card.overlay">{{ card.content }}</v-card-text>
+            <v-select
+              label="Tutor de la materia"
+              v-model="selectedTeacher"
+              :items="names"
+              @change="getTeacher"
+            />
 
-          <v-overlay v-model="card.overlay" class="align-center justify-center" contained>
-            <v-card class="pa-4">
-              <v-card-title>Detalles del Curso</v-card-title>
-              <v-card-text>
-                <p><strong>Materia:</strong> {{ card.subject }}</p>
-                <p><strong>Hora:</strong> {{ card.time }}</p>
-                <p><strong>Profesor:</strong> {{ card.teacher }}</p>
-              </v-card-text>
-              <v-row justify="center">
-                <v-btn color="gray" @click="hideOverlay(index)"> Regresar </v-btn>
-              </v-row>
-            </v-card>
-          </v-overlay>
+            <v-text-field
+              v-model="course.fecha"
+              label="Fecha de la clase"
+              readonly
+              append-icon="mdi-calendar"
+              @click="menuFecha = true"
+              :value="formatDate(course.fecha)"
+            />
 
-          <v-row justify="center" class="mt-auto" v-if="!card.overlay">
-            <v-btn class="mb-2" color="blue" @click="toggleOverlay(index)"> Más info </v-btn>
-            <v-btn class="mb-2" color="success" @click="selectCourse(index)"> Seleccionar </v-btn>
-          </v-row>
-        </v-card>
-      </v-carousel-item>
-    </v-carousel>
+            <v-menu v-model="menuFecha" :close-on-content-click="true" transition="slide-x-reverse" offset-y>
+              <v-date-picker v-model="course.fecha" type="date"></v-date-picker>
+            </v-menu>
 
-    <!-- Botón flotante con icono de calendario -->
-    <v-btn
-      fab
-      dark
-      color="primary"
-      class="floating-btn"
-      @click="openCalendar"
+            <v-select
+              v-model="course.hora"
+              :items="hourOptions"
+              label="Hora de la clase"
+              item-text="label"
+              item-value="value"
+              return-object
+              required
+            ></v-select>
 
-    >
-      <v-icon>mdi-calendar</v-icon>
-    </v-btn>
+            <v-select
+              v-model="course.duracion"
+              :items="durationOptions"
+              label="Duración de la clase"
+              item-text="label"
+              item-value="value"
+              required
+            ></v-select>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="white" style="background-color: red" @click="dialog = false">Volver</v-btn>
+          <v-btn text color="white" style="background-color: #10193A" @click="createCourse" :disabled="!formIsValid">Seleccionar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
-<script>
-// Importa tus imágenes desde la carpeta assets
-import img1 from '@/assets/circuitos.jpg';
-import img2 from '@/assets/fisica.jpg';
-import img3 from '@/assets/progra.jpg';
-import img4 from '@/assets/quimica.jpg';
+<script setup>
+import Titles from '@/components/Titles.vue';
+import { onBeforeMount, onMounted, ref } from 'vue'
+import axios from 'axios';
+import image from '@/assets/courses.jpg'
 import router from '@/router/index.js'
 
-export default {
-  data() {
-    return {
-      cards: [
-        {
-          title: 'Mallas y nodos',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Circuitos',
-          time: '09:00 AM - 10:30 AM',
-          teacher: 'Profesor Pérez',
-          image: img1,  // Usa la imagen importada
-        },
-        {
-          title: 'Fuerza',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Fisica',
-          time: '11:00 AM - 12:30 PM',
-          teacher: 'Profesora López',
-          image: img2,  // Usa la imagen importada
-        },
-        {
-          title: 'Herencia',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Programacion 3',
-          time: '01:00 PM - 02:30 PM',
-          teacher: 'Profesor González',
-          image: img3,  // Usa la imagen importada
-        },
-        {
-          title: 'Tabla periodica',
-          content: 'Contenido del Curso',
-          overlay: false,
-          subject: 'Quimica',
-          time: '03:00 PM - 04:30 PM',
-          teacher: 'Profesora Rodríguez',
-          image: img4,  // Usa la imagen importada
-        },
-      ],
-    };
-  },
-  methods: {
-    toggleOverlay(index) {
-      this.cards[index].overlay = !this.cards[index].overlay;
-    },
-    hideOverlay(index) {
-      this.cards[index].overlay = false;
-    },
-    selectCourse(index) {
-      // Lógica para seleccionar el curso
-      console.log(`Curso seleccionado: ${this.cards[index].title}`);
-    },
-    openCalendar() {
-      // Aquí agregas la lógica para abrir el calendario o realizar la acción que quieras
-      console.log('Abriendo calendario...');
-      router.push("/calendar");
-    },
-  },
-};
+const subjectList = ref([]);
+const dialog = ref(false);
+const selectedSubject = ref({});
+const formIsValid = ref(false);
+const teachers = ref([]);
+const names = ref([]);
+const selectedTeacher = ref(null);
+const course = ref({
+  id_p: null,
+  id_a: null,
+  id_m: null,
+  fecha: null,
+  hora: null,
+  duracion: null,
+});
+const index = ref(0);
+const user = ref({});
+const menuFecha = ref(false);
+const hourOptions = ref([]);
+const durationOptions = ref([0.5, 1]);
+
+onBeforeMount(() => {
+  const start = 10;  // 10 AM
+  const end = 17;    // 5 PM
+  const options = [];
+  for (let hour = start; hour <= end; hour++) {
+    for (let minute = 0; minute < 60; minute += 30) {
+      const value = `${hour < 10 ? '0' + hour : hour}:${minute === 0 ? '00' : '30'}`;
+      options.push(value);
+    }
+  }
+  hourOptions.value = options;
+})
+
+onMounted(async () => {
+  try {
+    let res = await axios.get(`http://localhost:3000/subject/`);
+    subjectList.value = res.data;
+    user.value = JSON.parse(localStorage.getItem('user'));
+    let res2 = await axios.get(`http://localhost:3000/teacher/`);
+    teachers.value = res2.data;
+    names.value = teachers.value.map(teacher => teacher.name);
+    console.log(teachers.value);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+const openDialog = (subject) => {
+  dialog.value = true;
+  selectedSubject.value = subject;
+  course.value.id_m = subject.id_m;
+  course.value.id_a = user.value.id_a;
+}
+
+const createCourse = async () => {
+  course.value.id_p = teachers.value[index.value].id_p;
+  let d = course.value.fecha;
+  course.value.fecha = d.toISOString().split('T')[0];
+  try {
+    await axios.post(`http://localhost:3000/course/`, course.value);
+  } catch (e) {
+    console.log(e);
+  }
+  dialog.value = false;
+  router.push('/ins');
+}
+
+const getTeacher = () => {
+  index.value = names.value.findIndex(name => name === selectedTeacher.value);
+}
+
+const formatDate = (date) => {
+  if (!date) return '';
+  const d = new Date(date);
+  return d.toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+}
 </script>
 
 <style scoped>
-.v-carousel-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.container {
+  padding: 100px;
 }
 
-.mt-auto {
-  margin-top: auto; /* Empuja el botón hacia la parte inferior */
+.scrollable {
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 16px;
 }
 
-/* Estilo del botón flotante */
-.floating-btn {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
+.edit-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
 }
 </style>

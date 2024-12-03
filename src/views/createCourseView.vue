@@ -19,7 +19,7 @@
           ></v-text-field>
 
           <!-- Botón de Crear curso -->
-          <v-btn color="primary" type="submit" class="mt-4" :disabled="!form">Crear</v-btn>
+          <v-btn color="#10193A" type="submit" class="mt-4" :disabled="!form">Crear</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
